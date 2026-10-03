@@ -1,0 +1,29 @@
+line,item,qty,spec,supplier,unit_cost_usd,make_buy,notes
+1,Tripod leg,3,"Structural circular hollow section 76.1 x 3.6 mm, yield at least 310 MPa (IS 4923 YSt 310 or EN 10219 S355J2H), cut to 4,364 mm; 8 mm end cap discs and 16 x 60 mm tongue plates welded at both ends; hot-dip galvanised",Local steel stockist and fabricator,65.00,Make,"Not water pipe. 29.9 kg each. Leg 1 carries the winch bracket (line 10)"
+2,Tripod head,1,"Weldment: 440 mm disc of 12 mm S355 plate, six 110 x 85 x 10 mm lug plates with 21 mm holes, two 120 x 10 mm sheave hanger plates with 26 mm holes; hot-dip galvanised",Local fabricator,140.00,Make,22.1 kg. Profile-cut parts recommended
+3,Head sheave with axle,1,"Steel sheave for 8 mm wire rope, 200 mm pitch diameter, 230 mm over the flanges, 30 mm wide, bronze bushed; 25 mm axle pin with head, nut and split pin; two 3 mm spacer washers",Rigging or crane parts supplier,55.00,Buy,D/d = 25
+4,Leg pin,6,"20 mm clevis pin, steel to grade 8.8 or better, 70 mm grip, with head, R-clip and lanyard",Rigging or fastener supplier,7.00,Buy,Three at the head and three at the feet
+5,Foot plate,3,"Weldment: 260 x 260 x 10 mm S275 plate, two 100 x 90 x 10 mm lug plates with 21 mm holes, one 60 x 40 x 12 mm chain eye with a 20 mm hole; two 28 mm stake holes; hot-dip galvanised",Local fabricator,35.00,Make,6.8 kg each
+6,Ground pad,3,"Hardwood board 600 x 300 x 50 mm with two 28 mm holes, ends banded with steel strap",Timber merchant,15.00,Make,Spreads the foot load on soft ground
+7,Ground stake,6,"25 mm round bar, 760 mm, pointed, with a welded 48 mm driving head",Local fabricator,9.00,Make,Two per foot through the plate and pad
+8,Spread chain set,3,"8 mm grade 80 chain, 4.3 m between shackles, with two 2 t bow shackles",Rigging supplier,51.00,Buy,"Ties each pair of feet; WLL 2 t"
+9,Hand winch,1,"Spur-gear hand winch, rated 1,000 kg on the first layer, automatic load-pressure (Weston) brake that holds the load when the handle is released, drum for at least 25 m of 8 mm rope, crank 300 mm, base for four M12 bolts",Lifting equipment supplier,380.00,Buy,"About 24 kg. Not a worm winch: too slow to crank for a 15 m lift"
+10,Winch bracket and bolts,1,"300 x 240 x 10 mm S275 plate welded flat on leg 1, 900 mm up from the foot pin, four 13 mm holes; four M12 x 40 grade 8.8 bolts with nyloc nuts and washers",Local fabricator,35.00,Make,Welded before galvanising
+11,Wire rope,1,"8 mm galvanised steel wire rope 6 x 19 IWRC, grade 1770, minimum breaking load at least 40 kN, 25 m, hard thimble eye with a pressed ferrule at one end",Rigging supplier,85.00,Buy,Safety factor 6.3 on the design hook load
+12,Swivel hook with safety latch,1,"Grade 80 swivel eye hook, WLL at least 1 t, with a sprung safety latch",Rigging supplier,28.00,Buy,On the rope's thimble eye
+13,Spreader main beam,1,"Weldment: RHS 100 x 50 x 4 mm S355, 1,100 mm, six 26.9 x 3.2 mm bolt sleeves through both walls at 300, 400 and 500 mm each side of centre, 300 x 120 x 20 mm lift lug with five 22 mm holes, 6 mm end caps, two 60 x 60 x 10 mm guide line eyes; hot-dip galvanised",Local fabricator,75.00,Make,17.1 kg
+14,Spreader cross bar,2,"Weldment: SHS 50 x 50 x 3 mm S355, 760 mm, 6 mm end caps, 100 x 160 x 10 mm top plate with two 18 mm holes, two 60 x 70 x 10 mm tip lugs with 14 mm holes; hot-dip galvanised",Local fabricator,35.00,Make,5.5 kg each
+15,Cross bar bolt,4,"M16 x 160 hexagon bolt, grade 8.8, galvanised, with nyloc nut and two washers",Fastener supplier,4.00,Buy,Two per cross bar
+16,Shackle,9,"Bow shackles: one 3.25 t (19 mm pin) for the lift lug and eight 1 t (11 mm pin) for the cross bar tips and band eyes",Rigging supplier,6.70,Buy,All with screw pins moused with wire
+17,Adjusting chain,4,"8 mm grade 80 chain, 1.0 m, used at 300 to 1,000 mm between shackles",Rigging supplier,12.00,Buy,Sets the band height to suit the animal
+18,Webbing band,2,"Plain polyester flat webbing sling, 240 mm wide, two-ply, 2.0 m effective length, flat sewn eyes at both ends, no stiffening insert of any kind",Lifting sling supplier,75.00,Buy,Chest band and flank band
+19,Felt sleeve,2,"Loose sleeve of 10 mm wool felt in a canvas cover, 1.0 m long, 260 mm wide, slides on the band",Canvas maker,25.00,Make,Soft padding only; it adds no stiffness
+20,Passer pole section,16,"Aluminium tube 6063-T6 40 x 2 mm, 2.0 m, with a 35.5 mm spigot riveted 100 mm into one end and a spring button lock",Aluminium stockist,18.00,Make,Eight sections per pole: 16 m reach
+21,Passer J-head,1,"26.9 x 3.2 mm steel tube: 500 mm shank, 180 deg bend of 400 mm radius, 250 mm nose with a rounded end and a 24 mm line eye, spigot to fit the pole",Local fabricator,45.00,Make,Separate tool; never fixed to the band
+22,Retrieval hook head,1,"16 mm round bar, 400 mm shank and an open hook of 60 mm radius, spigot to fit the pole",Local fabricator,25.00,Make,Catches the messenger line
+23,Messenger line,2,"8 mm polyester braided line, 35 m",Rope supplier,30.00,Buy,Pulls the band under the animal
+24,Guide line,2,"12 mm polyester three-strand rope, 25 m",Rope supplier,45.00,Buy,Tied to the spreader eyes
+25,Rim bearer,2,"Hardwood beam 1,400 x 200 x 100 mm",Timber merchant,35.00,Make,Carries the runner ends back from the rim
+26,Bridge runner,3,"RHS 100 x 50 x 3 mm S355, 4,500 mm, 4 mm end caps, hot-dip galvanised",Steel stockist,75.00,Make,30.8 kg each
+27,Deck panel,3,"Exterior plywood 25 mm, 1,500 x 1,220 mm, two 45 x 45 x 1,400 mm hardwood cleats screwed and glued underneath, edges sealed, grit paint on top",Timber merchant,65.00,Make,31.6 kg each with cleats
+28,Rim harness and lanyard,2,"Full-body harness with a front and a rear attachment point (EN 361 class or equivalent) and an adjustable 2 m work-restraint rope lanyard (EN 358 class), tied back to a tripod foot chain eye",Safety equipment supplier,110.00,Buy,"Worn by anyone working within 1 m of the rim; set so the wearer cannot step past the rim edge"

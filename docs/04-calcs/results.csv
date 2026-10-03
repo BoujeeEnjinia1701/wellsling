@@ -1,0 +1,40 @@
+tag,result,value,unit
+A1,Design animal 600 kg; rigging below the hook 42.8 kg; hanging rope up to 4.7 kg,600,kg
+A2,Design hook load 648 kg = 6.35 kN (SWL case); proof load 1.5 x = 9.53 kN,6.353,kN
+A3,Rope tension at the winch while lifting (bronze-bushed sheave 97 %): 6.55 kN,6.549,kN
+B1,"Rope 8 mm 6 x 19 IWRC 1770, MBL 40 kN: safety factor 6.1 (need 5)",6.107,
+B2,Sheave pitch diameter 200 mm on 8 mm rope: D/d = 25 (need 18),25,
+B3,"Drum 100 mm, 168 mm wide, 20 turns per layer; holds 54.7 m in 6 layers within the 220 mm flanges (need 25 m)",54.74,m
+B4,"Rope paid out with the animal at 15 m: 23.0 m (2.0 m on the drum, layer 1); at the landing height 4.8 m (20.2 m on the drum, layer 3)",20.2,m
+B5,Winch rated 9.81 kN on the first layer; on layer 3 it gives 7.69 kN against 6.55 kN needed: utilisation 85%,0.8516,
+B6,"Crank force (230 N at rated load, first layer, assumed): 154 N as the lift starts at 15 m, 196 N at the landing height (need at most 250 N)",195.9,N
+B7,Gear ratio about 9.6:1 (from the handle force); 35 mm of rope per crank turn on the first layer,9.597,
+B8,"Lifting 17.6 m (15 m deep to the landing height) at 15 rpm: about 29 min; work at the crank 144 kJ for 112 kJ of lift; about 92 W at the crank near the top, so the crew takes turns",29.17,min
+B9,"Lift energy flow: crank 144 kJ, winch gears and brake 29 kJ lost, sheave 3 kJ lost, 112 kJ into raising the animal and rigging",111.8,kJ
+C1,"Legs 4.50 m pin to pin at 32.1 deg from vertical, feet on a 5.0 m circle; head plate top 4.00 m above ground",32.08,deg
+C2,"Leg compressions at SWL, hook line vertical: leg 1 (winch) 9.34 kN, leg 2 2.79 kN, leg 3 2.79 kN; leg 1 below the winch carries 2.79 kN",9.34,kN
+C3,"Hook line leaning 10 deg in the worst direction (psi 300 deg): largest leg compression 10.85 kN; smallest leg compression in any direction 1.38 kN (stays in compression, no foot lifts)",10.85,kN
+C4,"A leg first unloads (the tripod would tip) when the hook line leans 19.3 deg from vertical in the worst direction, against 10 deg allowed for guide-line pull and swing",19.3,deg
+C5,"Leg tube 76.1 x 3.6 mm: A 820 mm2, I 54.0 cm4; Euler load pin to pin 55.3 kN; buckling factor 5.1 at SWL with the 10 deg lean (need 3), 3.4 at proof",5.096,
+C6,"Leg 1: rope pull 6.55 kN offset 121 mm from the leg axis bends it by 0.79 kN m; peak stress 83 MPa at SWL, factor 3.7 on a 310 MPa yield (need 3); 139 MPa at proof",3.749,
+C7,"Foot loads at SWL: vertical 2.51, 2.51, 2.51 kN; outward thrust 1.48, 1.48, 1.48 kN",1.482,kN
+C8,"Thrust to vertical ratio 0.59 at the feet, above a friction of 0.4 on wet timber and soil, so the spread chains are needed; chain tensions 0.86, 0.86, 0.86 kN at SWL, 1.28 kN at proof, against a 19.6 kN WLL (factor 23)",0.8557,kN
+C9,"Ground pressure under the most loaded pad 15 kPa at SWL, 22 kPa at proof, against 75 kPa assumed for soft wet ground (factor 5.1); pads 700 mm back from a 3 m rim",14.69,kPa
+D1,"Leg pins 20 mm in double shear: 17 MPa at the largest leg load (factor 22 on grade 8.8 shear yield); lug bearing 27 MPa, tongue bearing 34 MPa (S355, factor 10)",17.26,MPa
+D2,"Sheave axle load 12.40 kN; hanger plates (two, 120 x 10 mm) 16 MPa from tension and the 3.48 kN side load at 125 mm (factor 22.8 on S355)",15.58,MPa
+D3,"Sheave axle 25 mm, span 46 mm between hanger centres: bending 93 MPa (factor 3.8 on S355; a grade 8.8 pin gives 6.9)",92.96,MPa
+E1,"Main beam RHS 100 x 50 x 4: 60% of the animal on one band gives 3.61 kN at 450 mm, moment 1.62 kN m, stress 56 MPa (factor 6.3 on S355, need 3)",6.298,
+E2,"Cross bar SHS 50 x 3: 1.81 kN at each tip, 340 mm from the bolts, stress 74 MPa (factor 4.8)",4.823,
+E3,"Lift lug 20 mm, 22 mm hole 40 mm below its top edge: tear-out shear 5 MPa at SWL (factor 39.2 on shear yield); 3.25 t shackle at 20% of WLL",39.18,
+E4,Each cross bar hangs on two M16 grade 8.8 bolts: 1.81 kN per bolt against 113 kN proof load,1.805,kN
+E5,Band leg tension 1.77 kN (180 kg) against the sling's 8 t vertical WLL; 1 t shackles and 8 mm grade 80 chain at 18% and 9% of WLL,1.766,kN
+E6,Band pressure on the animal: 60% of 600 kg over a 240 mm band in contact for 0.89 m: 17 kPa average (estimate; two bands instead of one halve it),16.54,kPa
+F1,"Runner RHS 100 x 50 x 3, span 4.0 m between bearers: animal standing (hooves 1.2 m apart), 40% on one runner, x 1.25 for landing: 92 MPa (factor 3.9, need 3), deflection 15 mm",3.864,
+F2,"Animal lying, its weight spread over 1.6 m of body at mid-span, 40% on one runner: 105 MPa (factor 3.4)",3.381,
+F3,"Deck 25 mm plywood over 500 mm runner centres, one hoof (1.84 kN) at mid-span on a 300 mm strip: 7.4 MPa against about 25 MPa characteristic (factor 3.4)",3.398,
+F4,"Each rim bearer carries 4.60 kN: 16 kPa on the ground (factor 4.6 on 75 kPa), its near edge 400 mm back from a 3 m rim",16.42,kPa
+F5,Hooves 162 mm above the deck at the landing height with 300 mm of adjusting chain; deck top 225 mm above ground,162.5,mm
+G1,"Heaviest single piece: Deck panel with cleats, 31.6 kg (need at most 35 kg); whole kit about 549 kg including lines and passer",31.63,kg
+G2,"Value-engineering target: USD 1,500. Estimated cost of the constructable design: USD 3,004.30 (USD 1,504.30 over the target)",3004,USD
+G3,Passer reach: eight 2 m sections and the J-head give 16.5 m below the top hand (need 15 m); one pole weighs 17.6 kg with its head,16.5,m
+G4,"Set-up by three people, task by task (estimate): 20 min to the first lift against 20 min (passing the bands is extra and depends on the animal)",20,min
