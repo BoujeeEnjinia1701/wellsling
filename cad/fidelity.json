@@ -1,0 +1,47 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "a807864da154b544",
+ "options": {
+  "A": {
+   "title": "Tripod and hand winch",
+   "parts": 351,
+   "made_or_bought": 165,
+   "fasteners": 86,
+   "welds": 100,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 522.0,
+   "step_files": 165
+  },
+  "B": {
+   "title": "Portable gantry and chain hoists",
+   "parts": 427,
+   "made_or_bought": 177,
+   "fasteners": 164,
+   "welds": 86,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 654.4,
+   "step_files": 0
+  },
+  "C": {
+   "title": "Sheerlegs and draught haul",
+   "parts": 312,
+   "made_or_bought": 164,
+   "fasteners": 67,
+   "welds": 81,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 552.8,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 944.0
+}

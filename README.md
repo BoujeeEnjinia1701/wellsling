@@ -1,12 +1,14 @@
 # WellSling
 
-![WellSling: rim-worked animal lifting kit for open wells](media/render-hero.png)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Stage P3](https://img.shields.io/badge/stage-P3%20design%20outputs-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/wellsling/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/wellsling/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/wellsling/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/wellsling) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23128810.svg)](https://doi.org/10.5281/zenodo.23128810)
 
-![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/wellsling/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/wellsling/actions/workflows/reuse.yml) [![Archived in Software Heritage](https://archive.softwareheritage.org/badge/origin/https://github.com/BoujeeEnjinia1701/wellsling/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/BoujeeEnjinia1701/wellsling) [![DOI](https://zenodo.org/badge/{"message":"GitHub access to this repository is not enabled for this session. Use add_repo to request access. If add_repo answers that read access is already available and you need GitHub API or write access, call add_repo again with access:\"push\" to attach the repository with credentials.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"}.svg)](https://zenodo.org/badge/latestdoi/{"message":"GitHub access to this repository is not enabled for this session. Use add_repo to request access. If add_repo answers that read access is already available and you need GitHub API or write access, call add_repo again with access:\"push\" to attach the repository with credentials.","documentation_url":"https://docs.anthropic.com/en/docs/claude-code/github-actions"})
-
-**Area:** Food and water security · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 1,500 (estimated cost of the constructable design USD 3,004) · **Difficulty:** 2 of 5
+**Area:** Food and water security · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 1,500 (estimated cost of the constructable design USD 3,093) · **Difficulty:** 2 of 5
 
 Slings a fallen animal out of an open well from the rim, so nobody climbs down into bad air.
+
+![WellSling: rim-worked animal lifting kit for open wells](media/render-hero.png)
+
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement WSL-DWG-001 (PDF)](cad/drawings/WSL-DWG-001.pdf) · [STEM check](docs/01b-stem-check.md) · [Concept options](docs/02a-concept-options.md) · [User requirements](docs/03a-user-requirements.md) · [Product requirements](docs/03-requirements.md) · [Traceability](docs/03b-traceability.md) · [Sizing note WSL-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Decisions](docs/06-design-decisions.md) · [Review note](docs/REVIEW.md)
 
 > CONCEPT, NOT FOR FABRICATION. WellSling is a TRL 3 design on paper: it has not been built or tested, and it is not certified lifting or rescue equipment.
 
@@ -55,30 +57,41 @@ Full problem statement: [docs/01-problem.md](docs/01-problem.md)
 
 ## Concept
 
-A rim-worked kit (a 600 kg tripod with a braked hand winch, two plain webbing bands on an H-frame spreader, a separate passer pole and a slide-in landing bridge); farmers pass the bands under an animal that has fallen into an open well, winch it up from the edge and land it on the bridge, so nobody climbs in.
+A rim-worked kit: a 600 kg tripod with a braked hand winch, two plain webbing bands on band end yokes and an H-frame spreader, a separate passer pole and a slide-in landing bridge. Farmers pass the bands under an animal that has fallen into an open well, winch it up from the edge and land it on the bridge, so nobody climbs in.
 
-Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [docs/03-requirements.md](docs/03-requirements.md) · Calculations: [docs/04-calcs/01-sizing.md](docs/04-calcs/01-sizing.md) · Prototype build plan: [docs/05-build-plan.md](docs/05-build-plan.md) · Design decisions: [docs/06-design-decisions.md](docs/06-design-decisions.md)
+Full design precis: [docs/02-concept.md](docs/02-concept.md) · Problem: [docs/01-problem.md](docs/01-problem.md) · Regulatory: [docs/07-regulatory.md](docs/07-regulatory.md) · Feasibility: [docs/08-feasibility.md](docs/08-feasibility.md) · Risk: [docs/09-risk.md](docs/09-risk.md) · Market: [docs/10-market.md](docs/10-market.md) · Plan: [docs/11-plan.md](docs/11-plan.md)
+
+## STEM check
+
+Every physical, chemical and biological claim was checked against known science ([WSL-STM-001](docs/01b-stem-check.md), `docs/04-calcs/stem_check.py`): 37 of 48 claims are within known science and 11 are plausible, to confirm at TRL 4, and none fails. Seven details that failed were fixed under Amish's standing instruction: the winch leg missed its factor of 3 once a strut's natural bow is counted (the legs are now 88.9 mm), four joints of the kit 1.7 design could not be assembled (chain eyes, winch bolts, band eyes, guide line eyes), an option B beam was too heavy to carry, and the proof load exceeded the winch's working rating (WSL-DDR-004). An independent reviewer tried to refute the results; its findings are recorded in the check. Open for TRL 4: the winch's handle force, the soil and lining at real wells, the animal's tolerance of the bands, the passer's push, setup time, the dynamic load of a kicking animal and breaking it free of mud.
+
+## Concept options
+
+Three concepts with different working principles were modelled in detail and scored against the user requirements ([WSL-OPT-001](docs/02a-concept-options.md)): **A**, tripod and hand winch (224 of 265); **B**, portable gantry with two chain hoists (198); **C**, sheerlegs with a tractor haul and a snubbing post (177). Option A, the design carried since kit 1.7, was chosen by Amish on 2026-10-25 ([WSL-DDR-003](docs/decisions/0003-concept-selection.md)). B's best idea, lifting chest and flank separately, is kept for the TRL 4 dummy trial to decide; the adjusting chains stay for now.
+
+![WellSling concept options](media/options.png)
 
 ## Key components
 
-- Tripod: three 4.5 m pinned steel legs, a head with a 200 mm sheave, staked feet on timber pads, spread chains
-- Hand winch, 1,000 kg, with an automatic load-pressure brake, on one leg
-- H-frame spreader with two plain 240 mm webbing bands, adjusting chains and felt sleeves
+- Tripod: three 4.5 m pinned 88.9 mm steel legs, a head with a 200 mm sheave, staked feet on timber pads, a spread chain on its own eye fin between each pair of feet
+- Hand winch, 1,000 kg, with an automatic load-pressure brake, on a bracket on one leg
+- H-frame spreader with two plain 240 mm webbing bands on band end yokes, adjusting chains and felt sleeves
 - Passer pole of 2 m aluminium sections with a J-head, a retrieval hook head and messenger lines
 - Landing bridge: two rim bearers, three steel runners and three plywood deck panels
 - Rim harnesses for anyone within 1 m of the edge
 
 ## Key numbers (estimates, WSL-CAL-001)
 
-- Design animal 600 kg; hook load 648 kg; proof 1.5 times; rope safety factor 6.1
-- Wells up to 3 m across and 15 m deep; tripod tips only if the hook line leans 19.3 deg
-- Crank force at most 196 N; a 15 m lift takes about 29 minutes with the crew taking turns
-- Kit about 550 kg; heaviest piece 31.6 kg; setup about 20 minutes for three people
-- Value-engineering target USD 1,500; estimated cost USD 3,004 (USD 1,504 over the target)
+- Design animal 600 kg; hook load 662 kg; proof 1.5 times; rope safety factor 6.0
+- Wells up to 3 m across and 15 m deep; tripod tips only if the hook line leans 19.4 deg
+- Crank force at most 200 N; a 15 m lift takes about 30 minutes with the crew taking turns
+- Kit about 555 kg; heaviest piece 32.0 kg; setup about 20 minutes for three people
+- Value-engineering target USD 1,500; estimated cost USD 3,093 (USD 1,593 over the target)
+- Detailed model (kit 1.9, level D3): option A has 351 parts, every bolt, pin, chain link and weld modelled and checked for interference (`cad/fidelity.json`)
 
 ## Building the prototype
 
-The [prototype build plan](docs/05-build-plan.md) (WSL-BLD-001, plan, not yet built) takes a capable fabricator through the kit component by component, with a making sketch for each of the 15 made parts, close-ups of 11 joints and a picture for each of 14 assembly steps. The steel parts are cut, drilled and welded from tube, box section and plate, then galvanised; the timber parts are sawn; the winch, rigging and bands are bought. The first assembly is done on open ground, and nothing is lifted until a proof-load test at 1.5 times the rating, which is TRL 4 work.
+The [prototype build plan](docs/05-build-plan.md) (WSL-BLD-001, plan, not yet built) takes a capable fabricator through the kit component by component, with a making sketch for each of the 16 made parts, close-ups of 11 joints and a picture for each of 14 assembly steps. The steel parts are cut, drilled and welded from tube, box section and plate, then galvanised; the timber parts are sawn; the winch, rigging and bands are bought. The first assembly is done on open ground, and nothing is lifted until a proof-load test at 1.5 times the rating, which is TRL 4 work.
 
 ![WellSling build overview](docs/05-build-plan/overview.png)
 
@@ -104,9 +117,9 @@ The [prototype build plan](docs/05-build-plan.md) (WSL-BLD-001, plan, not yet bu
 
 | Folder | Contents |
 | --- | --- |
-| `docs/` | Problem, concept, requirements, calculations and design decisions |
-| `cad/src/` | build123d Python source, the source of truth for all geometry |
-| `cad/step/`, `cad/stl/` | Exported models for FreeCAD, other CAD tools and printing |
+| `docs/` | Problem, STEM check, concept options, requirements and traceability, calculations, build plan, design decisions, regulatory, feasibility, risk, market and plan |
+| `cad/src/` | build123d Python source, the source of truth for all geometry; `model.py` models every concept option at D3 |
+| `cad/step/`, `cad/stl/` | Exported models: a STEP per made or bought part of option A in `cad/step/A/`, an assembly STEP per option, STL by group |
 | `cad/drawings/` | 2D sketches and dimensioned drawings |
 | `bom/` | Bill of materials |
 | `electronics/` | KiCad schematics and PCB layouts |

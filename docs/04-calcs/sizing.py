@@ -33,7 +33,7 @@ def out(tag, text, value=None, unit=""):
 C = M.build_components()
 mass = M.mass_table(C=C)
 animal = 600.0                                     # design animal, upper end of 400 to 600 kg
-rig_keys = ["hook", "lift_shackle", "beam", "cross_bars", "cross_bolts", "band_shackles", "adj_chains", "bands", "felt"]
+rig_keys = ["hook", "lift_shackle", "beam", "cross_bars", "cross_bolts", "band_shackles", "adj_chains", "yokes", "bands", "felt"]
 rigging = sum(mass[k] for k in rig_keys)
 rope_kg_m = 0.25
 fall_max = 15.0 + D["z_u"] / 1000                   # rope hanging below the sheave with the animal at 15 m
@@ -77,7 +77,7 @@ out("B6", f"Crank force (230 N at rated load, first layer, assumed): {F_deep:.0f
 eta_w = 0.80
 ratio = rated * 1000 * r1 / (F_rated * arm * eta_w)
 v_turn = 2 * math.pi * r1 / ratio
-lift_m = 15.0 + 2.6
+lift_m = paid_deep - paid_top                      # hook travel = rope wound in (independent review, 2026-10-25)
 rpm = 15.0
 avg_r = (radii[lay_deep - 1] + r_top * 1000) / 2 / 1000
 t_lift = lift_m / (v_turn * avg_r / r1 * rpm)
@@ -85,7 +85,7 @@ E_lift = Wh * lift_m
 E_crank = E_lift / (eta_w * eta_sheave)
 P_crank = F_top * 2 * math.pi * arm * rpm / 60
 out("B7", f"Gear ratio about {ratio:.1f}:1 (from the handle force); {v_turn * 1000:.0f} mm of rope per crank turn on the first layer", ratio, "")
-out("B8", f"Lifting {lift_m:.1f} m (15 m deep to the landing height) at {rpm:.0f} rpm: about {t_lift:.0f} min; work at the crank {E_crank:.0f} kJ for {E_lift:.0f} kJ of lift; about {P_crank:.0f} W at the crank near the top, so the crew takes turns", t_lift, "min")
+out("B8", f"Lifting {lift_m:.1f} m of rope (hook from 15 m down to the landing height) at {rpm:.0f} rpm: about {t_lift:.0f} min; work at the crank {E_crank:.0f} kJ for {E_lift:.0f} kJ of lift; about {P_crank:.0f} W at the crank near the top, so the crew takes turns", t_lift, "min")
 out("B9", f"Lift energy flow: crank {E_crank:.0f} kJ, winch gears and brake {E_crank * (1 - eta_w):.0f} kJ lost, sheave {E_crank * eta_w * (1 - eta_sheave):.0f} kJ lost, {E_lift:.0f} kJ into raising the animal and rigging", E_lift, "kJ")
 
 # ------------------------------------------------------------------ C. tripod statics
@@ -152,10 +152,13 @@ Fmax = worst[1]
 e = D["rope_offset"]
 Mb = T0 * e / 1000                                    # kN m, the rope pull is offset e from leg 1's axis
 amp = 1 / (1 - Fmax / Pcr)
-sig = Fmax * 1000 / A_t + Mb * 1e6 / Z_t * amp
-sig_p = 1.5 * Fmax * 1000 / A_t + 1.5 * Mb * 1e6 / Z_t / (1 - 1.5 * Fmax / Pcr)
+e0 = Lb / 200.0                                      # initial bow, EN 1993-1-1 Table 5.1, curve c (cold-formed hollow section), elastic analysis
+amp_M = 1 / math.cos(math.pi / 2 * math.sqrt(Fmax / Pcr))          # secant amplification of a constant end moment (conservative for the rope's moment)
+amp_Mp = 1 / math.cos(math.pi / 2 * math.sqrt(1.5 * Fmax / Pcr))
+sig = Fmax * 1000 / A_t + (Mb * 1e6 * amp_M + Fmax * 1000 * e0 * amp) / Z_t
+sig_p = 1.5 * Fmax * 1000 / A_t + 1.5 * (Mb * 1e6 * amp_Mp + Fmax * 1000 * e0 / (1 - 1.5 * Fmax / Pcr)) / Z_t
 out("C5", f"Leg tube {od} x {wall} mm: A {A_t:.0f} mm2, I {I_t / 1e4:.1f} cm4; Euler load pin to pin {Pcr:.1f} kN; buckling factor {Pcr / Fmax:.1f} at SWL with the 10 deg lean (need 3), {Pcr / (1.5 * Fmax):.1f} at proof", Pcr / Fmax, "")
-out("C6", f"Leg 1: rope pull {T0:.2f} kN offset {e:.0f} mm from the leg axis bends it by {Mb:.2f} kN m; peak stress {sig:.0f} MPa at SWL, factor {fy_leg / sig:.1f} on a 310 MPa yield (need 3); {sig_p:.0f} MPa at proof", fy_leg / sig, "")
+out("C6", f"Leg 1: rope pull {T0:.2f} kN offset {e:.0f} mm from the leg axis bends it by {Mb:.2f} kN m; with an initial bow of L/200 ({e0:.1f} mm), secant amplification {amp_M:.2f} on the rope's moment and {amp:.2f} on the bow, peak stress {sig:.0f} MPa at SWL, factor {fy_leg / sig:.1f} on a 310 MPa yield (need 3); {sig_p:.0f} MPa at proof", fy_leg / sig, "")
 # feet: vertical, thrust, chains, pads
 lw = leg_kg * g / 1000 / 2
 V = np.array([F0[i] * c[i][2] + lw for i in range(3)])
@@ -183,11 +186,26 @@ q_allow = 75.0
 q = (V.max() + (mass["pads"] / 3 + mass["feet"] / 3) * g / 1000) / pad_A
 out("C9", f"Ground pressure under the most loaded pad {q:.0f} kPa at SWL, {1.5 * q:.0f} kPa at proof, against {q_allow:.0f} kPa assumed for soft wet ground (factor {q_allow / q:.1f}); pads 700 mm back from a 3 m rim", q, "kPa")
 
+Vmax_lean = 0.0
+for psi in range(0, 360, 5):
+    F, Tl = solve(Wh, 10.0, psi)
+    Vl = [F[i] * c[i][2] + lw for i in range(3)]
+    Vl[0] -= Tl * (-u_g[2])
+    Vmax_lean = max(Vmax_lean, max(Vl))
+q_lean = (Vmax_lean + (mass["pads"] / 3 + mass["feet"] / 3) * g / 1000) / pad_A
+out("C10", f"With the hook line leaning 10 deg in the worst direction the most loaded foot carries {Vmax_lean:.2f} kN down: {q_lean:.0f} kPa under its pad at SWL and {1.5 * q_lean:.0f} kPa at proof, below the 40 kPa at the low end of soft clay (factor {40 / q_lean:.1f} at SWL)", q_lean, "kPa")
+chord_r = math.hypot(*[(a + b) / 2 for a, b in zip(pts[0], pts[1])])
+inside = 2 * math.sqrt(max(0.0, (P["well_d"] / 2) ** 2 - chord_r ** 2)) / 1000
+sag = 1.4 * g * (math.dist(pts[0], pts[1]) / 1000) ** 2 / (8 * Tch.max() * 1000) * 1000
+out("C11", f"Each spread chain runs {chord_r / 1000:.2f} m from the well axis, so {inside:.2f} m of it crosses the mouth of a 3 m well near its edge; taut at SWL it sags {sag:.0f} mm and stays clear of the animal, which hangs within about 0.7 m of the axis", chord_r, "mm")
+
 # ------------------------------------------------------------------ D. head, pins, sheave hangers
 Fpin = worst[1] * 1.0
 A_pin = math.pi / 4 * P["pin_d"] ** 2
 tau = Fpin * 1000 / (2 * A_pin)
-out("D1", f"Leg pins 20 mm in double shear: {tau:.0f} MPa at the largest leg load (factor {0.6 * 640 / tau:.0f} on grade 8.8 shear yield); lug bearing {Fpin * 1000 / (2 * P['lug_t'] * P['pin_d']):.0f} MPa, tongue bearing {Fpin * 1000 / (P['tongue'][1] * P['pin_d']):.0f} MPa (S355, factor {355 / (Fpin * 1000 / (P['tongue'][1] * P['pin_d'])):.0f})", tau, "MPa")
+M_pin = Fpin * 1000 / 2 * (P["lug_t"] / 2 + 0.5 + P["tongue"][1] / 4)
+s_pin = M_pin / (math.pi * P["pin_d"] ** 3 / 32)
+out("D1", f"Leg pins 20 mm in double shear: {tau:.0f} MPa at the largest leg load, bending {s_pin:.0f} MPa (factor {0.6 * 640 / tau:.0f} on grade 8.8 shear yield); lug bearing {Fpin * 1000 / (2 * P['lug_t'] * P['pin_d']):.0f} MPa, tongue bearing {Fpin * 1000 / (P['tongue'][1] * P['pin_d']):.0f} MPa (S355, factor {355 / (Fpin * 1000 / (P['tongue'][1] * P['pin_d'])):.0f})", tau, "MPa")
 R_sh = np.linalg.norm(np.array([0, 0, -Wh]) + u_g * T0)
 lat = math.sqrt(R_sh ** 2 - (Wh + T0 * (-u_g[2])) ** 2)
 lever = -P["sheave_zc"]
@@ -199,6 +217,15 @@ ax_span = P["sheave_w"] + 6 + P["hanger"][1]
 Max = R_sh * ax_span / 4
 s_ax = Max * 1e3 / (math.pi * P["axle_d"] ** 3 / 32)
 out("D3", f"Sheave axle 25 mm, span {ax_span:.0f} mm between hanger centres: bending {s_ax:.0f} MPa (factor {355 / s_ax:.1f} on S355; a grade 8.8 pin gives {640 / s_ax:.1f})", s_ax, "MPa")
+
+# winch bracket: the rope pull along leg 1 acts above the base; four M12 bolts and two 6 mm fillet welds
+lev = D["rope_offset"] - (P["tube"][0] / 2 + P["bracket"][2])
+M_w = T0 * lev                                          # kN mm about the bracket face
+bolt_T = M_w / P["winch_bolts"][0] / 2
+bolt_V = T0 / 4
+weld_A = 2 * P["bracket"][0] * 0.7 * 6.0
+weld_s = T0 * 1000 / weld_A + M_w * 1000 / (2 * P["bracket"][0] ** 2 / 6 * 0.7 * 6.0)
+out("D4", f"Winch bracket: the {T0:.2f} kN rope pull acts {lev:.0f} mm above the bracket face; each M12 bolt sees {bolt_T:.2f} kN tension and {bolt_V:.2f} kN shear (grade 8.8 proof load about 48 kN); the two 6 mm fillet welds see {weld_s:.0f} MPa (factor {0.6 * 355 / weld_s:.0f} on S355 shear)", weld_s, "MPa")
 
 # ------------------------------------------------------------------ E. spreader and bands
 front = 0.6                                            # share of the animal on the more loaded band (cattle carry weight forward)
@@ -218,8 +245,9 @@ Ic = (cs ** 4 - (cs - 2 * ct) ** 4) / 12
 s_c = Pt * arm_t * 1000 / (Ic / (cs / 2))
 out("E2", f"Cross bar SHS {cs:.0f} x {ct:.0f}: {Pt:.2f} kN at each tip, {arm_t:.0f} mm from the bolts, stress {s_c:.0f} MPa (factor {355 / s_c:.1f})", 355 / s_c, "")
 t_lug = P["lift_lug"][2]
-s_lug = lug_load * 1000 / (2 * (P["lift_hole_z"] - 0) * 0 + 2 * (40 - P["lift_hole_d"] / 2) * t_lug)
-out("E3", f"Lift lug 20 mm, 22 mm hole 40 mm below its top edge: tear-out shear {s_lug:.0f} MPa at SWL (factor {0.6 * 355 / s_lug:.1f} on shear yield); 3.25 t shackle at {lug_load / 31.9:.0%} of WLL", 0.6 * 355 / s_lug, "")
+edge = P["lift_lug"][1] - P["lift_hole_z"]                        # hole centre below the lug top edge
+s_lug = lug_load * 1000 / (2 * (edge - P["lift_hole_d"] / 2) * t_lug)
+out("E3", f"Lift lug 20 mm, 22 mm hole {edge:.0f} mm below its top edge: tear-out shear {s_lug:.0f} MPa at SWL (factor {0.6 * 355 / s_lug:.1f} on shear yield); 3.25 t shackle at {lug_load / 31.9:.0%} of WLL", 0.6 * 355 / s_lug, "")
 bolt_t = Rb / 2
 out("E4", f"Each cross bar hangs on two M16 grade 8.8 bolts: {bolt_t:.2f} kN per bolt against 113 kN proof load", bolt_t, "kN")
 leg_T = front * Wa / 2
@@ -227,6 +255,13 @@ out("E5", f"Band leg tension {leg_T:.2f} kN ({leg_T / g * 1000:.0f} kg) against 
 contact = math.pi * P["band_r"] / 1000 * 0.8
 p_band = front * Wa / (P["band"][0] / 1000 * contact)
 out("E6", f"Band pressure on the animal: {front:.0%} of {animal:.0f} kg over a 240 mm band in contact for {contact:.2f} m: {p_band:.0f} kPa average (estimate; two bands instead of one halve it)", p_band, "kPa")
+# band end yokes (WSL-DEC-001 D13): removable bar through the band's sewn eye, welded top bar under the lug
+bd = P["yoke_bar_d"]
+Zy = math.pi * bd ** 3 / 32
+span_y = P["yoke_inside"] + P["yoke_plate"][1]                 # between side plate centres
+Mbot = leg_T * 1000 * (span_y - P["band"][0] / 2) / 4             # band eye spread over 240 mm in the middle of the span
+Mtop = leg_T * 1000 * P["yoke_inside"] / 4                        # lug load at mid span of the welded top bar
+out("E7", f"Band end yoke bars 25 mm: removable bar {Mbot / Zy:.0f} MPa, welded top bar {Mtop / Zy:.0f} MPa under the {leg_T:.2f} kN band leg (factor {355 / (Mtop / Zy):.1f} on S355, need 3)", 355 / (Mtop / Zy), "")
 
 # ------------------------------------------------------------------ F. landing bridge
 span = 2 * P["bearer_y"]
@@ -251,7 +286,7 @@ bridge_kg = mass["runners"] + mass["deck"] + mass["cleats"]
 Rbear = (Wa * dyn + bridge_kg * g / 1000) / 2
 qb = Rbear / (P["bearer"][0] * P["bearer"][1] / 1e6)
 out("F4", f"Each rim bearer carries {Rbear:.2f} kN: {qb:.0f} kPa on the ground (factor {q_allow / qb:.1f} on {q_allow:.0f} kPa), its near edge {P['bearer_y'] - P['bearer'][1] / 2 - P['well_d'] / 2:.0f} mm back from a 3 m rim", qb, "kPa")
-out("F5", f"Hooves {D['hoof_clear']:.0f} mm above the deck at the landing height with 300 mm of adjusting chain; deck top {D['deck_top']:.0f} mm above ground", D["hoof_clear"], "mm")
+out("F5", f"Hooves {D['hoof_clear']:.0f} mm above the deck at the landing height with {P['chain_len']:.0f} mm of adjusting chain; deck top {D['deck_top']:.0f} mm above ground", D["hoof_clear"], "mm")
 
 # ------------------------------------------------------------------ G. mass, cost, reach, setup
 pieces = {"Tripod leg": mass["leg_1"], "Tripod head": mass["head"], "Hand winch": mass["winch"],

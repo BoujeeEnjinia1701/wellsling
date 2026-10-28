@@ -3,9 +3,9 @@ doc_id: WSL-PRB-001
 title: WellSling problem statement
 project: WellSling
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-25'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Populated to TRL 2 and 3; constraints restated for the kit's own tripod and the value-engineering target; open questions settled in WSL-DDR-001; first co-design candidates named; safety section added
+- version: "0.3"
+  date: '2026-10-25'
+  author: Amish Chadha
+  change: Users-and-needs and stakeholders tables added (kit 1.8 pipeline, Tables 2 and 3); user requirements now in WSL-URS-001
 ---
 
 # WellSling problem statement
@@ -31,12 +35,36 @@ Existing non-entry equipment is built for people, not large animals. Commercial 
 
 ## Users and context
 
+Table 1. Users and context.
+
 | User | Need | Context |
 | --- | --- | --- |
 | Farmers and livestock owners | Get a fallen animal out without anyone climbing down | Open wells on farms and village edges, minutes after the fall |
 | Village volunteers and dairy cooperative staff | A kit they can fetch, set up and use with a short briefing | Kit kept at a shared point in the village |
 | Animal rescue organisations | A lighter, cheaper large-animal lift for well rescues | Rescue vans covering many villages |
 | Rural fire and disaster response crews | A non-entry option for animal-in-well call-outs | Long travel to villages |
+
+Table 2. Users and needs.
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Farmers and livestock owners | Get a fallen cow, buffalo or calf out alive, quickly, without anyone going down | An animal falls into an open well on the farm at dusk; the family calls neighbours and fetches the village kit | The animal is worth a year's income; pressure to act before help arrives; bad air at the bottom has killed rescuers |
+| Village volunteers and dairy cooperative staff | A kit they can fetch, set up and use after a short briefing, with clear steps | Three or four people carry the kit from the cooperative store and set it up over the well | Never used it before; rims crumble; no power; long, tiring lift by hand |
+| Animal rescue organisations | A lighter, cheaper large-animal lift for well rescues that is gentle on the animal | A rescue van answers a call in a village 40 km away and works with the villagers | Existing confined-space tripods are rated for people; improvised rope lifts injure animals |
+| Rural fire and disaster response crews | A non-entry method for animal-in-well calls that keeps their crew safe | Called out with the family already at the well and the animal in water | Long travel; their kit is for people; the urge to send someone down |
+
+Table 3. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Families of farmers and would-be rescuers | Bear the loss when a rescuer dies in a well | Awareness that nobody goes down; the kit kept and practised in the village |
+| Dairy cooperative unions | Could buy, store and train with shared kits for member villages | Co-design partner candidate (named in Co-design); review of setup and training |
+| Veterinarians and veterinary universities | Animal welfare during the lift: band width, pressure, time in the bands | Review of the bands and lift time before any live lift (WSL-DEC-001) |
+| Animal rescue organisations | Run well rescues today; know real wells and animals | First co-design partner candidate; trial in a test pit at TRL 4 |
+| Village fabricators and workshops | Would make and repair the steel and timber parts | Check that every made part suits local tools and skills |
+| Lifting equipment suppliers | Supply the winch, rope, shackles, chain and slings | Confirm catalogue data (winch handle force, sling eyes) when parts are bought |
+| Local government and police | Called to accidents; may set rules for open wells | Informed of the kit; well covers and parapets remain the first prevention |
+| Open-hardware community | Copies, improves and builds the design | Clear documents, open licences, no patent conflict |
 
 ## Operating environment
 
@@ -77,7 +105,7 @@ A dairy cooperative or animal welfare organisation that already responds to anim
 
 The scaffold's open questions were settled in WSL-DDR-001 under Amish's 2026-10-03 pre-approval:
 
-- The shared HatchSide tripod cannot carry a 600 kg animal, so WellSling has its own tripod, rated at a 648 kg hook load with the line leaning up to 10 deg (D1).
+- The shared HatchSide tripod cannot carry a 600 kg animal, so WellSling has its own tripod, rated at a 648 kg hook load with the line leaning up to 10 deg (D1); 662 kg after the 2026-10 fixes (WSL-CAL-001 v0.2).
 - Wells wider than 3 m are out of scope for this kit (D2).
 - An animal lying down or wedged is reached with the J-headed passer pole and a messenger line: the J goes under the body and the nose brings the line up the far side, and the line then pulls the band through (D4).
 - Two plain webbing bands 240 mm wide, chest and flank, with loose felt sleeves, share the load; the veterinary view on pressure and duration is an item to confirm (D3).

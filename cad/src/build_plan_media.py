@@ -8,7 +8,7 @@ Run from the repo root:
     python cad/src/build_plan_media.py steps [1 2 ...]
 Every picture is drawn from cad/src/model.py, so the pictures and the model never disagree:
     docs/05-build-plan/overview.png        every component pulled apart, numbered in build order
-    cad/drawings/WSL-DWG-101 to 115        making sketches for the made components
+    cad/drawings/WSL-DWG-101 to 116        making sketches for the made components (116: band end yoke)
     docs/05-build-plan/joint-NN.png        close-ups of the joints that need explaining
     docs/05-build-plan/step-NN.png         one picture per assembly step
 Uses .kit/build_views.py. BUILD PLAN ILLUSTRATION, PLAN NOT YET BUILT.
@@ -24,10 +24,12 @@ from build_views import Part  # noqa: E402
 import model as m  # noqa: E402
 from model import PARAMS as P  # noqa: E402
 from build123d import Box, Pos, Rot, Compound  # noqa: E402
+import wsl_parts  # noqa: E402
+wsl_parts.svg_tolerant()
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-03"
+DATE = "2026-10-25"
 D = m.derived(P)
 X0, Y0 = D["drop"]
 _C = None
@@ -36,7 +38,8 @@ COL = {"legs": "#64748B", "head": "#0F766E", "sheave": "#B45309", "pins": "#1118
        "pads": "#A16207", "stakes": "#374151", "spread_chains": "#78716C", "winch": "#C2410C", "bracket": "#7C3AED",
        "rope": "#111827", "hook": "#DC2626", "beam": "#0E7490", "cross_bars": "#15803D", "cross_bolts": "#111827",
        "shackles": "#57534E", "adj_chains": "#57534E", "bands": "#EAB308", "felt": "#A8A29E", "bearers": "#92400E",
-       "runners": "#475569", "deck": "#D6A461", "cleats": "#92400E", "passer": "#94A3B8", "jhead": "#B91C1C"}
+       "runners": "#475569", "deck": "#D6A461", "cleats": "#92400E", "passer": "#94A3B8", "jhead": "#B91C1C",
+       "yokes": "#9333EA"}
 
 
 def comps():
@@ -85,10 +88,7 @@ def W(key, name, box, explode=(0, 0, 0), color=None, col=None):
 
 
 def fuse(*keys):
-    s = None
-    for k in keys:
-        s = comps()[k] if s is None else s + comps()[k]
-    return s
+    return Compound([comps()[k] for k in keys])
 
 
 def legs():
@@ -111,7 +111,7 @@ def one_foot():
 def leg_flat():
     """One leg laid along X for the three views."""
     lg = m._leg_local(P, D)
-    s = lg["tube"] + lg["caps"] + lg["tongues"]
+    s = Compound([lg["tube"], lg["caps"], lg["tongues"]])
     best = None
     for ang in (D["leg_angle"] - 90, 90 - D["leg_angle"], D["leg_angle"] + 90, -D["leg_angle"] - 90):
         r = Rot(0, ang, 0) * s
@@ -150,9 +150,9 @@ def overview():
         part("Winch bracket, welded to leg 1", c["bracket"], COL["bracket"], (900 * e1[0], 900 * e1[1], 300)),
         part("Tripod legs (3)", legs(), COL["legs"], (0, 0, 700)),
         part("Tripod head", c["head"], COL["head"], (0, 0, 2000)),
-        part("Head sheave and axle", c["sheave"] + c["axle"], COL["sheave"], (700 * e1[0], 700 * e1[1], 1600)),
-        part("Leg pins (6)", c["head_pins"] + c["foot_pins"], COL["pins"], (0, 0, 1200)),
-        part("Hand winch with load brake", c["winch"] + c["winch_bolts"], COL["winch"], (1500 * e1[0], 1500 * e1[1], 300)),
+        part("Head sheave and axle", Compound([c["sheave"], c["axle"]]), COL["sheave"], (700 * e1[0], 700 * e1[1], 1600)),
+        part("Leg pins (6)", Compound([c["head_pins"], c["foot_pins"]]), COL["pins"], (0, 0, 1200)),
+        part("Hand winch with load brake", Compound([c["winch"], c["winch_bolts"]]), COL["winch"], (1500 * e1[0], 1500 * e1[1], 300)),
         part("Spread chains (3)", c["spread_chains"], COL["spread_chains"], (0, 0, -600)),
         part("Wire rope, 8 mm", c["rope"], COL["rope"], (0, 0, 700)),
         part("Swivel hook", c["hook"], COL["hook"], (0, 0, 900)),
@@ -160,12 +160,13 @@ def overview():
         part("Spreader cross bars (2)", c["cross_bars"], COL["cross_bars"], (0, 0, 450)),
         part("Cross bar bolts (4)", c["cross_bolts"], COL["cross_bolts"], (0, 0, 1050)),
         part("Lift shackle", c["lift_shackle"], COL["shackles"], (0, 0, 850)),
-        part("Adjusting chains and shackles (4)", c["adj_chains"] + c["band_shackles"], COL["adj_chains"], (0, 0, 150)),
+        part("Adjusting chains and shackles (4)", Compound([c["adj_chains"], c["band_shackles"]]), COL["adj_chains"], (0, 0, 150)),
+        part("Band end yokes (4)", c["yokes"], COL["yokes"], (0, 0, 0)),
         part("Webbing bands (2)", c["bands"], COL["bands"], (0, 0, -150)),
         part("Felt sleeves (2)", c["felt"], COL["felt"], (0, 0, -450)),
         part("Rim bearers (2)", c["bearers"], COL["bearers"], (-5200, 0, -900)),
         part("Bridge runners (3)", c["runners"], COL["runners"], (-5200, 0, -500)),
-        part("Deck panels (3)", c["deck"] + c["cleats"], COL["deck"], (-5200, 0, -100)),
+        part("Deck panels (3)", Compound([c["deck"], c["cleats"]]), COL["deck"], (-5200, 0, -100)),
         part("Passer pole sections (16)", pp["poles"] + pp["spigots"], COL["passer"], (0, 0, 0)),
         part("Passer J-head", pp["jhead"], COL["jhead"], (0, 0, 0)),
         part("Retrieval hook head", pp["hookhead"], COL["jhead"], (0, -400, 0)),
@@ -213,7 +214,7 @@ def sheets(which=None):
          "Check: the stake slides through a 28 mm hole without force."])
     S[103] = lambda: sheet(103, foot["foot_plates"], "Foot plate", COL["feet"],
         [part("pad", foot["pads"], "#D1D5DB"), part("stakes", foot["stakes"], "#D1D5DB"),
-         part("leg", win(m._leg_local(P, D)["tube"] + m._leg_local(P, D)["tongues"], 2200, 2800, -200, 200, 0, 500), "#D1D5DB")],
+         part("leg", win(Compound([m._leg_local(P, D)["tube"], m._leg_local(P, D)["tongues"]]), 2200, 2800, -200, 200, 0, 500), "#D1D5DB")],
         "foot plate (make 3)", "10 mm and 12 mm S275 plate, hot-dip galvanised",
         ["Make three. Base: 260 x 260 x 10 mm plate.",
          "Two 28 mm stake holes on the cross centre line, 85 mm each side",
@@ -222,33 +223,33 @@ def sheets(which=None):
          "  centred, 17 mm apart (inside faces), running toward the well.",
          "  21 mm pin hole through both, 60 mm above the base top.",
          "  Drill the two lugs together after welding so the holes line up.",
-         "Chain eye: 60 x 40 x 12 mm plate standing on the inner edge,",
-         "  10 mm in from it, in line with the lugs; 20 mm hole",
-         "  20 mm above the base. The two spread chains shackle to it.",
+         "Chain eye fins: two 60 x 45 x 12 mm plates on the well side,",
+         "  centres 50 mm in from the edge and 60 mm either side, each",
+         "  turned to point along its spread chain; 20 mm hole 25 mm up.",
          "Fillet weld 6 mm all round; galvanise after welding.",
          "Check: the leg tongue (16 mm) slides between the lugs and a",
          "  20 mm pin goes through all three holes by hand."])
     S[104] = lambda: sheet(104, m._winch_local(P, D)["bracket"], "Winch bracket", COL["bracket"],
         [part("leg 1", win(m._leg_local(P, D)["tube"], 1500, 2600, -400, 400, 400, 1700), "#D1D5DB")],
         "winch bracket on leg 1 (make 1)", "10 mm S275 plate; four M12 x 40 grade 8.8 bolts",
-        ["Make one. Plate 300 x 240 x 10 mm.",
-         "Four 13 mm holes on a 160 mm square, centred on the plate,",
-         "  to suit the winch base (check against the winch bought).",
+        ["Make one. Plate 300 x 300 x 10 mm.",
+         "Four 13 mm holes on a 160 mm square, its centre 30 mm off",
+         "  the plate's centre (check against the winch bought).",
          "It is welded flat on the outer face of leg 1 (the face away",
          "  from the well), its 300 mm length along the leg, its middle",
          "  900 mm up the leg from the foot pin centre.",
-         "It sits 70 mm off the leg centre line, toward the side the",
-         "  winch handle will be on, so the drum lines up under the sheave.",
+         "Its centre sits 110 mm off the leg centre line, toward the",
+         "  handle side, so all four bolts and nuts clear the tube.",
          "Two 6 mm fillet welds along the leg, both sides, full length.",
          "Weld before the leg is galvanised.",
          "Check: the plate is flat and square to the leg within 1 mm."], view_shape=bracket_flat())
     S[105] = lambda: sheet(105, c["leg_3"], "Tripod leg", COL["legs"],
-        [part("head", c["head"], "#D1D5DB"), part("other legs", c["leg_1"] + c["leg_2"], "#D1D5DB"),
+        [part("head", c["head"], "#D1D5DB"), part("other legs", Compound([c["leg_1"], c["leg_2"]]), "#D1D5DB"),
          part("feet", c["feet"], "#D1D5DB")],
-        "tripod leg (make 3; leg 1 carries the winch bracket)", "Tube 76.1 x 3.6 mm, yield 310 MPa or more; 8 and 16 mm plate",
-        ["Make three. Structural tube 76.1 x 3.6 mm, yield at least",
+        "tripod leg (make 3; leg 1 carries the winch bracket)", "Tube 88.9 x 3.2 mm, yield 310 MPa or more; 8 and 16 mm plate",
+        ["Make three. Structural tube 88.9 x 3.2 mm, yield at least",
          "  310 MPa, cut 4,364 mm long, ends square. Not water pipe.",
-         "End caps: 8 mm discs, 76 mm across, welded on both ends.",
+         "End caps: 8 mm discs, 100 mm across, welded on both ends.",
          "Tongues: 60 x 90 x 16 mm plate, one welded to the middle of",
          "  each cap, in line with the tube; the two tongues lie in the",
          "  same plane. 21 mm pin hole 60 mm from the cap face.",
@@ -258,7 +259,7 @@ def sheets(which=None):
          "Check: pin centres 4,500 mm apart within 3 mm; leg straight",
          "  within 5 mm; all three legs the same length within 2 mm."], view_shape=leg_flat())
     S[106] = lambda: sheet(106, c["head"], "Tripod head", COL["head"],
-        [part("legs", win(legs(), -600, 600, -600, 600, 3500, 4100), "#D1D5DB"), part("sheave", c["sheave"] + c["axle"], "#D1D5DB")],
+        [part("legs", win(legs(), -600, 600, -600, 600, 3500, 4100), "#D1D5DB"), part("sheave", Compound([c["sheave"], c["axle"]]), "#D1D5DB")],
         "tripod head weldment (make 1)", "12 mm and 10 mm S355 plate, hot-dip galvanised",
         ["Make one. Disc 440 mm across, 12 mm S355 plate.",
          "Leg lugs: six 110 x 85 x 10 mm plates under the disc, in three",
@@ -281,11 +282,11 @@ def sheets(which=None):
          "Sleeves: six 26.9 x 3.2 mm tubes, 100 mm long, through 27 mm",
          "  holes in the top and bottom walls, 300, 400 and 500 mm each",
          "  side of the middle; welded flush top and bottom.",
-         "Lift lug: 300 x 120 x 20 mm plate standing on top, centred,",
-         "  along the beam. Five 22 mm holes 50 mm apart, 40 mm below",
+         "Lift lug: 300 x 110 x 20 mm plate standing on top, centred,",
+         "  along the beam. Five 22 mm holes 50 mm apart, 30 mm below",
          "  its top edge, so the hook point can move to balance the animal.",
-         "End caps 6 mm. Guide line eyes: 60 x 60 x 10 mm plates on top,",
-         "  35 mm from each end, 18 mm hole.",
+         "End caps 6 mm. Guide line eyes: 60 x 60 x 10 mm plates on",
+         "  each end cap, pointing along the beam, 18 mm hole.",
          "Full-penetration weld on the lug; 6 mm fillets elsewhere.",
          "Check: an M16 bolt passes each sleeve; lug square to the beam."], inset=(20, -40))
     S[108] = lambda: sheet(108, win(c["cross_bars"], -5000, 5000, Y0, 5000, 0, 5000), "Spreader cross bar", COL["cross_bars"],
@@ -365,7 +366,7 @@ def sheets(which=None):
          "It is pushed across the well mouth from one side, resting on",
          "  both rim bearers, 500 mm from the next runner.",
          "Check: straight within 5 mm; no dents in the top face."], inset=(30, -40))
-    S[115] = lambda: sheet(115, win(c["deck"] + c["cleats"], -5000, 5000, -760, 760, -100, 500), "Deck panel", COL["deck"],
+    S[115] = lambda: sheet(115, win(Compound([c["deck"], c["cleats"]]), -5000, 5000, -760, 760, -100, 500), "Deck panel", COL["deck"],
         [part("runners", win(c["runners"], -5000, 5000, -900, 900, -10, 500), "#D1D5DB")],
         "deck panel (make 3)", "Exterior plywood 25 mm; hardwood 45 x 45 mm cleats",
         ["Make three. Exterior plywood 25 mm, 1,500 x 1,220 mm.",
@@ -377,6 +378,24 @@ def sheets(which=None):
          "Seal all edges; grit paint on top.",
          "Check: the panel drops onto three runners 500 mm apart and",
          "  sits flat; it weighs no more than 35 kg."], inset=(35, -40))
+    def one_yoke():
+        Sx = m.band_stack(P, D["cross_bot"])
+        ps = m.band_end_parts(P, Sx, 0.0, 0.0, 0.0, "x")
+        return Compound([q["shape"] for q in ps if q["key"] == "yokes"])
+    S[116] = lambda: sheet(116, one_yoke(), "Band end yoke", COL["yokes"], [],
+        "band end yoke (make 4)", "10 mm S355 plate; 25 mm round bar; two R-clips",
+        ["Make four. Side plates: two 40 x 150 x 10 mm, 26 mm hole",
+         "  25 mm above the bottom end; corners rounded.",
+         "Top bar: 25 mm round bar 258 mm long, welded between the",
+         "  plates 100 mm above the hole centres; plates parallel.",
+         "Lug: 60 x 50 x 10 mm with a 14 mm hole in the middle,",
+         "  welded on the top bar at its centre.",
+         "Removable bar: 25 mm round bar 322 mm long, chamfered,",
+         "  6.5 mm R-clip hole 10 mm in from each end.",
+         "The removable bar goes through one plate, the band's sewn",
+         "  eye and the other plate; an R-clip at each end.",
+         "Galvanise the frame and the bar.",
+         "Check: the bar slides through plates and eye by hand."], inset=(30, -40))
     for n in sorted(S):
         if which and n not in which:
             continue
@@ -404,9 +423,10 @@ def joints(which=None):
                       "legs pinned to the head", "Seen from below: each tongue between a pair of lugs, one pin with an R-clip on a lanyard",
                       elev=-30, azim=-60)
     sc = (-120, 420, -420, 180, 3640, 4000)
-    J[3] = lambda: jt(3, [W("head", "Hanger plates", sc), W("sheave", "Sheave, 200 mm, with spacers", sc),
+    hangers = Compound([q["shape"] for q in m._option_a_cached(P) if "sheave hanger" in q["name"]])
+    J[3] = lambda: jt(3, [part("Hanger plates", win(hangers, *sc), COL["head"]), W("sheave", "Sheave, 200 mm, with spacers", sc),
                          W("axle", "Axle pin, 25 mm", sc, col="pins"), W("rope", "Wire rope", sc)],
-                      "head sheave in its hangers", "Cut through the axle: 3 mm spacer each side, axle through both hangers, nut and split pin",
+                      "head sheave in its hangers", "Cut through the axle: 3 mm spacer each side, axle through both hangers, head on the far side, retaining ring on the leg side",
                       cut="+Y", elev=15, azim=-30)
     wb = (500, 1700, -2500, -1300, 450, 1500)
     J[4] = lambda: jt(4, [W("leg_1", "Leg 1", wb, col="legs"), W("bracket", "Winch bracket", wb), W("winch", "Hand winch", wb),
@@ -426,8 +446,8 @@ def joints(which=None):
     tx = X0 + P["cross"][0] / 2 - 40
     tb = (tx - 150, X0 + P["band_r"] + 150, Y0 + 300, Y0 + 600, 1820, 2420)
     J[7] = lambda: jt(7, [W("cross_bars", "Cross bar tip lug", tb), W("band_shackles", "1 t shackles", tb, col="shackles"),
-                         W("adj_chains", "Adjusting chain", tb), W("bands", "Band sewn eye", tb)],
-                      "band to the cross bar", "Shackle in the tip lug, chain to set the band height, shackle through the band's sewn eye",
+                         W("adj_chains", "Adjusting chain", tb), W("yokes", "Band end yoke", tb), W("bands", "Band sewn eye", tb)],
+                      "band to the cross bar", "Shackle in the tip lug, chain to set the band height, shackle in the yoke lug; the yoke bar goes through the band's sewn eye",
                       elev=15, azim=-60)
     bb = (X0 - 500, X0 + 500, Y0 + 250, Y0 + 650, D["band_c"] - 420, D["band_c"] + 200)
     J[8] = lambda: jt(8, [W("bands", "Webbing band, 240 mm", bb), W("felt", "Felt sleeve", bb)],
@@ -494,7 +514,7 @@ def steps(which=None):
                       elev=20, azim=-50, label_done=False)
     erected = base + [part(q.name, q.shape, "#D1D5DB") for q in trip] + [K("foot_pins", "Foot pins", col="pins")]
     E[6] = lambda: st(6, erected, [K("spread_chains", "Spread chains (3)", (0, 0, 500))], "spread chains",
-                      "Shackle a chain between each pair of chain eyes; take up the slack so all three are hand tight",
+                      "Shackle a chain between the facing chain eye fins of each pair of feet; take up the slack so all three are hand tight",
                       elev=35, azim=-50, label_done=False)
     E[7] = lambda: st(7, erected + [K("spread_chains", "Spread chains")],
                       [K("rope", "Wire rope", (0, 0, 0)), K("hook", "Swivel hook", (0, 0, 600))],
@@ -514,8 +534,9 @@ def steps(which=None):
     hung2 = [W("beam", "Spreader", near), W("cross_bars", "Cross bars", near), W("cross_bolts", "Bolts", near),
              W("lift_shackle", "Lift shackle", near, col="shackles"), W("hook", "Hook", near), W("rope", "Rope", near)]
     E[10] = lambda: st(10, hung2, [K("adj_chains", "Adjusting chains (4)", (0, 0, -300)), K("band_shackles", "1 t shackles (8)", (0, 0, -300), col="shackles"),
+                                   K("yokes", "Band end yokes (4)", (0, 0, -450)),
                                    K("bands", "Webbing bands (2)", (0, 0, -600)), K("felt", "Felt sleeves (2)", (0, 0, -600))],
-                       "bands, chains and sleeves", "At the well: each band is passed under the animal first (see the passer), then shackled to the chains",
+                       "bands, chains, yokes and sleeves", "At the well: each band is passed under the animal first (see the passer), then its eyes go on the yoke bars",
                        elev=20, azim=-55, label_done=False)
     rig = erected + [K("spread_chains", "Spread chains"), K("rope", "Rope"), K("hook", "Hook")] + \
         [part(q.name, q.shape, "#D1D5DB") for q in spr] + [K("lift_shackle", "Lift shackle", col="shackles"),

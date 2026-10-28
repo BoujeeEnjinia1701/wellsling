@@ -5,30 +5,56 @@ repo: BoujeeEnjinia1701/wellsling         # GitHub repository, shown on every dr
 area: Food and water security
 trl: 3                   # Technology Readiness Level, see .kit/STANDARDS.md section 9
 trl_target: 3
+stage: P3                # pipeline stage, STANDARDS section 19; P3 recorded 2026-10-25 (kit 1.9.1 upgrade)
+stem_check: open         # WSL-STM-001: 37 within, 11 plausible to confirm at TRL 4 (winch handle force, soil, rim, bands, passer, setup, dynamic load, mud); 7 fixes under the standing instruction (WSL-DEC-001 D10 to D14, D17, D18)
+concept_options: [A, B, C]   # WSL-OPT-001: A tripod and hand winch, B portable gantry and chain hoists, C sheerlegs and draught haul
+concept_chosen: A           # chosen by Amish on 2026-10-25 (WSL-DEC-001 D15, WSL-DDR-003 accepted)
 design_state: constructable   # STANDARDS section 18; made constructable 2026-10-03 (WSL-DDR-002)
 trl_evidence:
   - docs/01-problem.md
+  - docs/01b-stem-check.md
   - docs/02-concept.md
+  - docs/02a-concept-options.md
+  - docs/03a-user-requirements.md
   - docs/03-requirements.md
+  - docs/03b-traceability.md
   - docs/decisions/0001-trl2-review-decisions.md
   - docs/decisions/0002-design-for-construction.md
+  - docs/decisions/0003-concept-selection.md
+  - docs/decisions/0004-stem-check-fixes.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
+  - docs/04-calcs/stem_check.py
+  - docs/04-calcs/stem_results.csv
   - cad/src/model.py
-  - cad/step/wellsling-assembly.step
+  - cad/src/wsl_parts.py
+  - cad/fidelity.json
+  - cad/step/A-assembly.step
+  - cad/step/B-assembly.step
+  - cad/step/C-assembly.step
   - cad/drawings/WSL-DWG-001.svg
   - cad/drawings/WSL-DWG-001.pdf
+  - cad/drawings/WSL-DWG-116.svg
   - bom/bom.csv
   - docs/05-build-plan.md
   - docs/06-design-decisions.md
+  - docs/07-regulatory.md
+  - docs/08-feasibility.md
+  - docs/09-risk.md
+  - docs/10-market.md
+  - docs/11-plan.md
   - docs/05-build-plan/overview.png
   - cad/src/build_plan_media.py
+  - cad/src/product_model.py
+  - media/hero.png
+  - media/concept-blueprint.png
+  - media/model.glb
 shortlisted: false
 pitch: >-
   Slings a fallen animal out of an open well from the rim, so nobody climbs down into bad air.
 problem: >-
   When a cow, buffalo or calf falls into an open well, people climb down to save it. The air at the bottom of a well can be low in oxygen or full of gas, and people die, often several in a row as each tries to rescue the last.
-budget_usd: 1500  # value-engineering target (STANDARDS section 18); estimated cost of the constructable design USD 3,004
+budget_usd: 1500  # value-engineering target (STANDARDS section 18); estimated cost of the constructable design USD 3,093
 difficulty: 2  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:
